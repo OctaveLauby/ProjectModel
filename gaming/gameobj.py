@@ -1,5 +1,6 @@
 """Class for major objects of a game (board, player, game itself, ...)"""
 from utils.log import LogClass
+from utils.params import read_params
 from .parameters import LOGLVL
 
 
@@ -8,6 +9,12 @@ class GameObject(LogClass):
 
     counts = {
         'total': 0,
+    }
+
+    params = {
+        "identity": None,
+        "loglvl": None,
+        "logpath": None,
     }
 
     def __new__(cls, *args, **kwargs):
@@ -23,19 +30,27 @@ class GameObject(LogClass):
 
         return super().__new__(cls)
 
-    def __init__(self, identity=None, loglvl=None, logpath=None):
+    def __init__(self, **params):
         """Init new game object."""
-
         self.cls = self.__class__
         self.cls_name = self.cls.__name__
 
+        params = read_params(params, self.cls.params)
+
+        identity = params['identity']
         if identity is None:
             identity = GameObject.counts[self.cls_name]
         self._id = identity
 
+        loglvl = params['loglvl']
         if loglvl is None:
             loglvl = LOGLVL
-        super().__init__(name=self.name, loglvl=loglvl, logpath=logpath)
+
+        super().__init__(
+            name=self.name,
+            loglvl=loglvl,
+            logpath=params['logpath'],
+        )
 
         self.log.debug("Created")
 
