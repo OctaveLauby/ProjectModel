@@ -1,4 +1,4 @@
-"""Functions to manage logs.
+"""Utils to manage logs.
 
 Log Levels are:
     DEBUG   10

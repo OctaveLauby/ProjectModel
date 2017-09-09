@@ -1,4 +1,4 @@
-"""Different tools to handle common python objects."""
+"""Utils to manage common python objects."""
 import json
 import os
 import pickle
