@@ -2,9 +2,11 @@ Model Of Python3 Project
 ---
 
 
+
 # Introduction
 
 This project is a good example of how to frame its own project.
+
 
 ## Architecture
 
@@ -34,16 +36,17 @@ Basically the structure of a project should be as the following:
 
 I like to use pytest as it is simple to use.
 
+
 ## Environment
 
-A good practice is to use a python virtual environment, so that each project has it own environment at does not share a python configuration.
+A good practice is to use a python virtual environment, so that each project has it own environment at does not share a python configuration. **Venv must not be pushed !**
 
 1. Create a virtual env:
 ```
 $ python3 -m venv venv
 ```
 
-2. Add `venv*` path to .gitignore.
+2. Add `venv*` path to [gitignore](https://github.com/OctaveLauby/ProjectModel/blob/master/.gitignore).
 
 3. Activate venv
 ```
@@ -52,7 +55,7 @@ $ source venv/bin/activate
 
 4. Install requirements
 ```
-(venv) $ pip install -r requirements
+(venv) $ pip install -r requirements.txt
 ```
 
 5. Leave environment:
@@ -69,18 +72,30 @@ $ source venv/bin/activate
 > - You can't launch both projects at the same time
 
 
+## Syntaxes
+
+The way you write code must be **consistent** along the project, or at least in every package.
+
+Something you have to respect is the [PEP8 coding conventions](https://www.python.org/dev/peps/pep-0008/).
+
+Then you can draw your inspiration from [Google conventions](https://google.github.io/styleguide/pyguide.html).
+
+A best way to improve and build a good coding styles is to regulary read code of others (standard libraries are a good way to start).
+
+
 
 # Use case
+
 
 ## Main
 
 **Script**: [main.py](https://github.com/OctaveLauby/ProjectModel/blob/master/main.py)
 
-**Description**: not implemented yet
+**Description**: *not implemented yet*
 
 **Usage**: `$ python3 main.py -h`
 
-**Examples**: not implemented yet
+**Examples**: *not implemented yet*
 
 
 ## More
