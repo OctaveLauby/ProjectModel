@@ -114,7 +114,7 @@ class Game(GameObject):
     def state(self):
         """Return current game state."""
         self.log.warning("Game has no state")
-        return None
+        return []
 
     # ----------------------------------------------------------------------- #
     # Gameplay
