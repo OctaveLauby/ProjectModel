@@ -54,8 +54,7 @@ class LogClass(object):
             return 'WARNING'
         elif lvl_int <= 40:
             return 'ERROR'
-        else:
-            return 'FATAL'
+        return 'FATAL'
 
     def set_loglvl(self, lvl):
         """Set level of logs."""

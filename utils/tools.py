@@ -13,8 +13,7 @@ def copy(obj):
         return res
     elif isinstance(obj, list):
         return [copy(elem) for elem in obj]
-    else:
-        return obj
+    return obj
 
 
 def load(path, method=None):
