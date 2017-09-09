@@ -9,14 +9,14 @@ def test_gameobject():
 
     instance = gameobj.GameObject()
     assert instance.name == "GameObject_1"
-    assert instance.get_loglvl() == 10
+    assert instance.get_loglvl() == 20
 
     instance = gameobj.GameObject(
         identity="new",
-        loglvl=20,
+        loglvl=10,
     )
     assert instance.name == "GameObject_new"
-    assert instance.get_loglvl() == 20
+    assert instance.get_loglvl() == 10
 
     instance = gameobj.GameObject()
     assert instance.name == "GameObject_3"
