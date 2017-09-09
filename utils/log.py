@@ -79,12 +79,15 @@ def create_logger(name, lvl, path=None):
         log.removeHandler(log.handlers[0])
 
     if path:
+        # Create log file container if necessary
         log_dir = os.path.dirname(path)
-        if not os.path.isdir(log_dir):
+        if log_dir and not os.path.exists(log_dir):
             os.makedirs(log_dir)
-        log_sh = logging.FileHandler(path, encoding="utf-8")
-    else:
-        log_sh = logging.StreamHandler()
+
+    log_sh = (
+        logging.FileHandler(path, encoding="utf-8")
+        if path else logging.StreamHandler()
+    )
     formatter = logging.Formatter(
         "%(asctime)s: [%(levelname)s] %(name)s - %(message)s"
     )
