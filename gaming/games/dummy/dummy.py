@@ -56,7 +56,7 @@ class Dummy(Game):
 
         # Update environment
         self.msg_n += 1
-        if msg is "bye":
+        if msg == "bye":
             self.raise_endflag()
 
         # Return consequences
