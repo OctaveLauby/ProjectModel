@@ -29,3 +29,20 @@ def read_params(params, dft_params):
         )
 
     return res_params
+
+
+def add_dft_arguments(parser, dft_args, flag_prefix="", help_prefix=""):
+    """Add arguments to parser.
+
+    Args:
+        parser (argparse.ArgumentParser): parser you want to complete
+        dft_args    (dict): default arguments (arg_name, dft_value)
+        flag_prefix (str):  prefix before flag
+        help_prefix (str):  prefix before help
+    """
+    for param, dft_value in dft_args.items():
+        param_flag = "--%s%s" % (flag_prefix, param)
+        parser.add_argument(
+            param_flag, required=False, default=dft_value,
+            help="%s%s, default is %s" % (help_prefix, param, dft_value)
+        )
