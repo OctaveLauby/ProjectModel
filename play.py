@@ -7,7 +7,7 @@ access all packages.
 """
 from gaming import games
 from gaming.gameobj import GameObject
-from utils.params import add_dft_arguments
+from utils.params import add_dft_args
 
 
 def main(game_name, g_kwargs, g_params, p_params):
@@ -45,13 +45,13 @@ if __name__ == "__main__":
 
     # Object parameters (for logs and all)
     dft_params = GameObject.params
-    add_dft_arguments(
+    add_dft_args(
         parser=parser,
         dft_args=dft_params,
         flag_prefix="",
         help_prefix="game parameter ",
     )
-    add_dft_arguments(
+    add_dft_args(
         parser=parser,
         dft_args=dft_params,
         flag_prefix="p_",
