@@ -42,7 +42,7 @@ class Game(GameObject):
     # ----------------------------------------------------------------------- #
     # Initialisation and properties
 
-    def __init__(self, bots=None, load_path=None, p_params=None, **params):
+    def __init__(self, bots=None, p_params=None, **params):
         """Init a game.
 
         Args:
@@ -71,9 +71,6 @@ class Game(GameObject):
         # Status
         self._player = 0    # Current player
         self._over = False
-
-        if load_path:
-            self.load(load_path)
 
     @property
     def players(self):

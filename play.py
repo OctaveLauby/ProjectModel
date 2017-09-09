@@ -10,13 +10,15 @@ from gaming.gameobj import GameObject
 from utils.params import add_dft_args
 
 
-def main(game_name, g_kwargs, g_params, p_params):
+def main(game_name, load_path, g_kwargs, g_params, p_params):
     """Launch game."""
     game_cls = getattr(games, game_name)
     kwargs = g_kwargs
     kwargs.update(g_params)
     kwargs['p_params'] = p_params
     game = game_cls(**kwargs)
+    if load_path:
+        game.load(load_path)
     game.play()
 
 
@@ -65,9 +67,9 @@ if __name__ == "__main__":
 
     main(
         game_name=args.game,
+        load_path=args.load_path,
         g_kwargs={
             'bots': bots,
-            'load_path': args.load_path
         },
         g_params={
             param: getattr(args, param)
