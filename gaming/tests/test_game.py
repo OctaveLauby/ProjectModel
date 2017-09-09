@@ -31,10 +31,10 @@ def teardown_function(function):
 
 
 def test_game_1():
+    """Test Skeleton only."""
 
     ginstance = game.Game(
         bots=[1],
-        load_path=None,
         p_params={'loglvl': "INFO"},
         loglvl="DEBUG",
     )
@@ -91,5 +91,59 @@ def test_game_1():
     assert os.path.exists(os.path.join(save_dir, game.STATE_FILE))
     assert os.path.exists(os.path.join(save_dir, game.STATUS_FILE))
 
-    ninstance = game.Game(load_path=save_dir)
+    ninstance = game.Game()
+    ninstance.load(save_dir)
     assert ninstance.status() == ginstance.status()
+
+
+def test_game_2():
+    """Test use of skeleton."""
+
+    class MyGame(game.Game):
+
+        actions = ["a"]
+
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.hist = []
+
+        def act(self, action):
+            """Add action to history until hist len >= 4."""
+            self.hist.append(action)
+            if len(self.hist) >= 4:
+                self.raise_endflag()
+            return [None, None]
+
+        def display(self):
+            """Display history."""
+            print("Game is on, history is %s" % self.hist)
+
+        def load_state(self, state):
+            """Load state."""
+            print(state)
+            self.hist = state
+
+        def state(self):
+            """Return state."""
+            return self.hist
+
+    ginstance = MyGame(bots=[0], loglvl="DEBUG")
+
+    # ---- Players
+    assert isinstance(ginstance.players[0], Bot)
+    assert isinstance(ginstance.players[1], Human)
+
+    # ---- Play
+    from gaming.players import human
+    human.input = lambda x: "human"
+    ginstance.play()
+    assert ginstance.state() == ["a", "human", "a", "human"]
+    assert ginstance.status() == {'over': True, 'player': 0}
+
+    # ---- Save / Load
+    save_dir = os.path.join(TMP_DIR, "test_2_game")
+    ginstance.save(save_dir)
+    ninstance = MyGame()
+    ninstance.load(save_dir)
+    assert ninstance.state() == ["a", "human", "a", "human"]
+    assert ninstance.status() == {'over': True, 'player': 0}
