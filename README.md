@@ -13,19 +13,19 @@ This project is a good example of how to frame its own project.
 
 **Script**: main.py
 
-**Usage**: `python3 main.py -h`
+**Usage**: `$ python3 main.py -h`
 
 **Examples**: ?
 
 
 ## More
 
-Launch tests using shell command:
+Launch tests using command:
 ```
-sh run_tests.sh
+$ sh run_tests.sh
 ```
 
-Launch Linter:
+Launch linter on a package:
 ```
-pylint <package_name>
+$ pylint <package_name> --ignore tests --init-hook="import sys; sys.path.append('.')"
 ```
