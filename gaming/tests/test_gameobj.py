@@ -7,6 +7,8 @@ class MyGameObj(gameobj.GameObject):
 
 def test_gameobject():
 
+    gameobj.GameObject.reboot()
+
     instance = gameobj.GameObject()
     assert instance.name == "GameObject_1"
     assert instance.get_loglvl() == 20

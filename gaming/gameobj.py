@@ -17,6 +17,16 @@ class GameObject(LogClass):
         "logpath": None,
     }
 
+    @classmethod
+    def reboot(cls):
+        """Reboot class counts.
+
+        QUICKFIX: for tests, as counts are not reset between scripts
+        """
+        cls.counts = {
+            'total': 0,
+        }
+
     def __new__(cls, *args, **kwargs):
         """Create a new game object."""
 
