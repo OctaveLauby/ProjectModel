@@ -1,1 +1,1 @@
-LOGLVL = "DEBUG"
+LOGLVL = "INFO"
