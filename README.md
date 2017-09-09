@@ -15,7 +15,7 @@ This project is a good example of how to frame its own project.
 
 **Usage**: `$ python3 main.py -h`
 
-**Examples**: ?
+**Examples**: not implemented yet
 
 
 ## More
