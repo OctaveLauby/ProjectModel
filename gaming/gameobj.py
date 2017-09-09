@@ -58,3 +58,9 @@ class GameObject(LogClass):
     def name(self):
         """Return name of instance"""
         return "%s_%s" % (self.cls_name, self._id)
+
+    def __str__(self):
+        return self.name
+
+    def __repr__(self):
+        return str(self)
