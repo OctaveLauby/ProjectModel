@@ -74,7 +74,7 @@ $ source venv/bin/activate
 
 ## Main
 
-**Script**: main.py
+**Script**: [main.py](https://github.com/OctaveLauby/ProjectModel/blob/master/main.py)
 
 **Description**: not implemented yet
 
