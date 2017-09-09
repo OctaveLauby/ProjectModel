@@ -89,13 +89,18 @@ A best way to improve and build a good coding styles is to regulary read code of
 
 ## Main
 
-**Script**: [main.py](https://github.com/OctaveLauby/ProjectModel/blob/master/main.py)
+**Script**: [play.py](https://github.com/OctaveLauby/ProjectModel/blob/master/play.py)
 
-**Description**: *not implemented yet*
+**Description**: Launch game implemented in [gaming.games](https://github.com/OctaveLauby/ProjectModel/tree/master/gaming/games/)
 
-**Usage**: `$ python3 main.py -h`
+**Usage**: `$ python3 play.py -h`
 
-**Examples**: *not implemented yet*
+**Examples**:
+```
+$ python3 play.py Dummy
+$ python3 play.py Dummy -b 0
+$ python3 play.py Dummy --loglvl DEBUG --p_loglvl DEBUG --p_logpath logs/dummy_players.log
+```
 
 
 ## More
