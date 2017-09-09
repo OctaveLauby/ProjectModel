@@ -32,14 +32,11 @@ class GameObject(LogClass):
 
     def __init__(self, **params):
         """Init new game object."""
-        self.cls = self.__class__
-        self.cls_name = self.cls.__name__
-
-        params = read_params(params, self.cls.params)
+        params = read_params(params, self.__class__.params)
 
         identity = params['identity']
         if identity is None:
-            identity = GameObject.counts[self.cls_name]
+            identity = GameObject.counts[self.__class__.__name__]
         self._id = identity
 
         loglvl = params['loglvl']
@@ -57,7 +54,7 @@ class GameObject(LogClass):
     @property
     def name(self):
         """Return name of instance"""
-        return "%s_%s" % (self.cls_name, self._id)
+        return "%s_%s" % (self.__class__.__name__, self._id)
 
     def __str__(self):
         return self.name

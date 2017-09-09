@@ -24,4 +24,3 @@ class Player(GameObject):
     def take(self, consequence):
         """Nothing"""
         self.log.debug("Skip consequence %s", consequence)
-        pass

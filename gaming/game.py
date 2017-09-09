@@ -18,10 +18,7 @@ from .players import Bot, Human
 
 
 class InvalidAction(Exception):
-    pass
-
-
-class GameOver(Exception):
+    """Exception raised when an invalid action is tried."""
     pass
 
 
@@ -32,6 +29,7 @@ class Game(GameObject):
     If msg in raise says option, the method does not necessarily requires an
     implementation.
     """
+    actions = None  # Possible actions
     bot = Bot       # Class used to build bots
     human = Human   # Class used to build humans
     players_n = 2   # Number of players in game
@@ -39,7 +37,7 @@ class Game(GameObject):
     # ----------------------------------------------------------------------- #
     # Initialisation and properties
 
-    def __init__(self, bots=[], load_path=None, p_params={}, **params):
+    def __init__(self, bots=None, load_path=None, p_params=None, **params):
         """Init a game.
 
         Args:
@@ -53,12 +51,16 @@ class Game(GameObject):
         super().__init__(**params)
 
         # Players
+        if p_params is None:
+            p_params = {}
+        if bots is None:
+            bots = []
         self._players = [
-            self.cls.bot(**p_params)
+            self.__class__.bot(**p_params)
             if player in bots
-            else self.cls.human(**p_params)
+            else self.__class__.human(**p_params)
 
-            for player in range(self.cls.players_n)
+            for player in range(self.__class__.players_n)
         ]
 
         # Status
@@ -90,7 +92,7 @@ class Game(GameObject):
 
     def av_actions(self):
         """Return available actions."""
-        return None
+        return self.actions
 
     def is_over(self):
         """Return whether game is over."""
@@ -106,7 +108,7 @@ class Game(GameObject):
 
     def state(self):
         """Return current game state."""
-        return []
+        return self.status
 
     # ----------------------------------------------------------------------- #
     # Gameplay
@@ -122,7 +124,7 @@ class Game(GameObject):
     def next(self):
         """Go to next player."""
         self._player += 1
-        if self._player >= self.cls.players_n:
+        if self._player >= self.__class__.players_n:
             self._player = 0
 
     def play(self):
@@ -154,7 +156,7 @@ class Game(GameObject):
 
             # Reverberate consequences on players
             self.log.debug("Apply consequences to players")
-            assert len(consequences) == self.cls.players_n
+            assert len(consequences) == self.__class__.players_n
             for player, consequence in zip(self.players, consequences):
                 player.take(consequence)
 

@@ -1,13 +1,15 @@
 """Dummy Game.
 
-
-
+Conversation between the 2 players.
 """
 from gaming.game import Game, InvalidAction
 
 
 class Dummy(Game):
+    """Conversation Game.
 
+    Game is over when one of the player says bye.
+    """
     actions = {
         "1": "hi",
         "2": "bye",
@@ -47,7 +49,7 @@ class Dummy(Game):
         try:
             msg = Dummy.actions[action]
         except KeyError:
-            self.log.warning("Invalid Action %s" % action)
+            self.log.warning("Invalid Action %s", action)
             raise InvalidAction(action)
 
         # Display Message

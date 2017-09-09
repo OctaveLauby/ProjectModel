@@ -1,1 +1,2 @@
+"""Default parameters."""
 LOGLVL = "INFO"
