@@ -13,8 +13,15 @@ Vocabulary:
     - status:   where the game is at
                 e.g. who is playing, is it over
 """
+import os
+
+from utils.tools import load, save
 from .gameobj import GameObject
 from .players import Bot, Human
+
+
+STATE_FILE = "state.pickle"
+STATUS_FILE = "status.json"
 
 
 class InvalidAction(Exception):
@@ -26,8 +33,6 @@ class Game(GameObject):
     """Game Skeleton
 
     Methods raising NotImplementedError must be implemented.
-    If msg in raise says option, the method does not necessarily requires an
-    implementation.
     """
     actions = None  # Possible actions
     bot = Bot       # Class used to build bots
@@ -108,7 +113,8 @@ class Game(GameObject):
 
     def state(self):
         """Return current game state."""
-        return self.status
+        self.log.warning("Game has no state")
+        return None
 
     # ----------------------------------------------------------------------- #
     # Gameplay
@@ -174,10 +180,31 @@ class Game(GameObject):
     # ----------------------------------------------------------------------- #
     # Save / Load
 
+    def load_state(self, state):
+        """Load state."""
+        self.log.warning("Ignoring state %s", state)
+
+    def load_status(self, status):
+        """Load status dictionary."""
+        self._over = status['over']
+        self._player = status['player']
+
     def load(self, load_path):
         """Load game environement from file."""
-        raise NotImplementedError("Option not implemented")
+        file_path = os.path.join(load_path, STATE_FILE)
+        state = load(file_path)
+        self.load_state(state)
+
+        file_path = os.path.join(load_path, STATUS_FILE)
+        status = load(file_path)
+        self.load_status(status)
 
     def save(self, save_path):
         """Save game environement."""
-        raise NotImplementedError("Option not implemented")
+        state = self.state()
+        file_path = os.path.join(save_path, STATE_FILE)
+        save(state, file_path)
+
+        status = self.status()
+        file_path = os.path.join(save_path, STATUS_FILE)
+        save(status, file_path)
