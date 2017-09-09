@@ -49,7 +49,6 @@ class Dummy(Game):
         try:
             msg = Dummy.actions[action]
         except KeyError:
-            self.log.warning("Invalid Action %s", action)
             raise InvalidAction(action)
 
         # Display Message
