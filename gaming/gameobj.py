@@ -6,13 +6,6 @@ from utils.params import read_params
 from .parameters import LOGLVL
 
 
-DFT_CLASS_ATTR = {
-    '_logname': None,
-    '_loglvl': LOGLVL,
-    '_logpath': None,
-}
-
-
 class GameObjMeta(type):
     """Meta class of GameObject
 
@@ -21,14 +14,15 @@ class GameObjMeta(type):
     """
 
     __inheritors__ = defaultdict(list)
+    _logname = None
+    _loglvl = LOGLVL
+    _logpath = None
 
     def __new__(mcs, clsname, superclasses, attributedict):
         """Create a new game class."""
         klass = type.__new__(mcs, clsname, superclasses, attributedict)
         for base in klass.mro()[1:-1]:  # skip current class
             mcs.__inheritors__[base].append(klass)
-        for dft_attr, dft_value in DFT_CLASS_ATTR.items():
-            setattr(klass, dft_attr, dft_value)
         return klass
 
 
@@ -69,7 +63,7 @@ class GameObject(LogClass, metaclass=GameObjMeta):
         else:
             cls._loglvl = level
             for subclass in GameObjMeta.__inheritors__[cls]:
-                subclass._loglvl = level
+                subclass.set_dft_loglvl(level=level, propag=True)
 
     # ---- Object counter
 

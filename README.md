@@ -110,7 +110,9 @@ Launch tests using command (Linux):
 $ sh run_tests.sh
 ```
 
-Launch linter on a package:
+Launch linter on a package (use quotes for multi linting):
 ```
 $ sh run_linter.sh <package_name>
+$ sh run_linter.sh gaming
+$ sh run_linter.sh "gaming utils"
 ```
