@@ -11,11 +11,11 @@ class GameObjMeta(type):
 
     __inheritors__ = defaultdict(list)
 
-    def __new__(cls, clsname, superclasses, attributedict):
+    def __new__(mcs, clsname, superclasses, attributedict):
         """Create a new game class."""
-        klass = type.__new__(cls, clsname, superclasses, attributedict)
+        klass = type.__new__(mcs, clsname, superclasses, attributedict)
         for base in klass.mro()[1:-1]:
-            cls.__inheritors__[base].append(klass)
+            mcs.__inheritors__[base].append(klass)
         return klass
 
 
