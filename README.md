@@ -112,5 +112,5 @@ $ sh run_tests.sh
 
 Launch linter on a package:
 ```
-$ pylint <package_name> --ignore tests --init-hook="import sys; sys.path.append('.')"
+$ sh run_linter.sh <package_name>
 ```
