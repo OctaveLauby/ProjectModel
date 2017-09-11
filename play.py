@@ -46,7 +46,7 @@ if __name__ == "__main__":
     )
 
     # Object parameters (for logs and all)
-    dft_params = GameObject.params
+    dft_params = GameObject.dft_params()
     add_dft_args(
         parser=parser,
         dft_args=dft_params,

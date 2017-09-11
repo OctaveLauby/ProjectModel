@@ -25,13 +25,33 @@ class GameObject(LogClass, metaclass=GameObjMeta):
     # ----------------------------------------------------------------------- #
     # Class attributes / methods
 
-    # ---- Log
+    # ---- Params
 
-    dft_log_kwargs = {
-        'name': None,
-        'loglvl': LOGLVL,
-        'logpath': None,
-    }
+    _logname = None
+    _loglvl = LOGLVL
+    _logpath = None
+
+    @classmethod
+    def dft_params(cls):
+        """Return default params."""
+        params = cls.dft_logparams()
+        params.update({
+            'identity': None,
+        })
+
+    @classmethod
+    def dft_logparams(cls):
+        """Return default log params."""
+        return {
+            'name': cls._logname,
+            'loglvl': cls._loglvl,
+            'logpath': cls._logpath
+        }
+
+    @classmethod
+    def set_dft_loglvl(cls, level):
+        """Set default log level (use to create instances)."""
+        cls._loglvl = level
 
     # ---- Object counter
 
@@ -69,7 +89,7 @@ class GameObject(LogClass, metaclass=GameObjMeta):
             identity = self.__class__.count()
         self._id = identity
 
-        log_kwargs = read_params(log_kwargs, self.__class__.dft_log_kwargs)
+        log_kwargs = read_params(log_kwargs, self.__class__.dft_logparams())
         if log_kwargs['name'] is None:
             log_kwargs['name'] = self.name
         super().__init__(**log_kwargs)
