@@ -88,6 +88,9 @@ class GameObject(LogClass, metaclass=GameObjMeta):
     def __new__(cls, *args, **kwargs):
         """Create a new game object."""
 
+        # # Disable pylint unused argument in method scope
+        # pylint: disable=W0613
+
         # Update counter of all mother classes within GameObject
         GameObject.counter[GameObject] += 1
         for gameobj_cls in GameObjMeta.__inheritors__[GameObject]:
