@@ -1,63 +1,78 @@
 """Class for major objects of a game (board, player, game itself, ...)"""
+from collections import defaultdict
+
 from utils.log import LogClass
 from utils.params import read_params
 from .parameters import LOGLVL
 
 
-class GameObject(LogClass):
+class GameObjMeta(type):
+    """Meta class to track ineheritance within GameObject."""
+
+    __inheritors__ = defaultdict(list)
+
+    def __new__(cls, clsname, superclasses, attributedict):
+        """Create a new game class."""
+        klass = type.__new__(cls, clsname, superclasses, attributedict)
+        for base in klass.mro()[1:-1]:
+            cls.__inheritors__[base].append(klass)
+        return klass
+
+
+class GameObject(LogClass, metaclass=GameObjMeta):
     """Major object of game."""
 
-    counts = {
-        'total': 0,
+    # ----------------------------------------------------------------------- #
+    # Class attributes / methods
+
+    # ---- Log
+
+    dft_log_kwargs = {
+        'name': None,
+        'loglvl': LOGLVL,
+        'logpath': None,
     }
 
-    params = {
-        "identity": None,
-        "loglvl": None,
-        "logpath": None,
-    }
+    # ---- Object counter
+
+    counter = defaultdict(int)  # (class, number of instances) dict
 
     @classmethod
-    def reboot(cls):
-        """Reboot class counts.
+    def count(cls):
+        """Return number of instances."""
+        return GameObject.counter[cls]
+
+    @staticmethod
+    def reset_counter():
+        """Reset counter of game objects.
 
         QUICKFIX: for tests, as counts are not reset between scripts
         """
-        cls.counts = {
-            'total': 0,
-        }
+        GameObject.counter = defaultdict(int)
+
+    # ----------------------------------------------------------------------- #
+    # Instances methods
 
     def __new__(cls, *args, **kwargs):
         """Create a new game object."""
 
-        # Update counts
-        cls_name = cls.__name__
-        GameObject.counts['total'] += 1
-        if cls_name not in GameObject.counts:
-            GameObject.counts[cls_name] = 1
-        else:
-            GameObject.counts[cls_name] += 1
-
+        # Update counter of all mother classes within GameObject
+        GameObject.counter[GameObject] += 1
+        for gameobj_cls in GameObjMeta.__inheritors__[GameObject]:
+            if issubclass(cls, gameobj_cls):
+                GameObject.counter[gameobj_cls] += 1
         return super().__new__(cls)
 
-    def __init__(self, **params):
+    def __init__(self, identity=None, **log_kwargs):
         """Init new game object."""
-        params = read_params(params, self.__class__.params)
-
-        identity = params['identity']
         if identity is None:
-            identity = GameObject.counts[self.__class__.__name__]
+            identity = self.__class__.count()
         self._id = identity
 
-        loglvl = params['loglvl']
-        if loglvl is None:
-            loglvl = LOGLVL
-
-        super().__init__(
-            name=self.name,
-            loglvl=loglvl,
-            logpath=params['logpath'],
-        )
+        log_kwargs = read_params(log_kwargs, self.__class__.dft_log_kwargs)
+        if log_kwargs['name'] is None:
+            log_kwargs['name'] = self.name
+        super().__init__(**log_kwargs)
 
         self.log.debug("Created")
 

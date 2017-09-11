@@ -7,7 +7,7 @@ class MyGameObj(gameobj.GameObject):
 
 def test_gameobject():
 
-    gameobj.GameObject.reboot()
+    gameobj.GameObject.reset_counter()
 
     instance = gameobj.GameObject()
     assert instance.name == "GameObject_1"
@@ -23,11 +23,15 @@ def test_gameobject():
     instance = gameobj.GameObject()
     assert instance.name == "GameObject_3"
 
-    instance = MyGameObj()
-    assert instance.name == "MyGameObj_1"
+    instance = MyGameObj(
+        identity="first"
+    )
+    assert instance.name == "MyGameObj_first"
 
-    assert gameobj.GameObject.counts == {
-        "total": 4,
-        "GameObject": 3,
-        "MyGameObj": 1,
+    instance = MyGameObj()
+    assert instance.name == "MyGameObj_2"
+
+    assert gameobj.GameObject.counter == {
+        MyGameObj: 2,
+        gameobj.GameObject: 5,
     }
