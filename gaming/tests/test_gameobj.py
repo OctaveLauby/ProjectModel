@@ -17,6 +17,9 @@ def test_gameobject():
 
     gameobj.GameObject.reset_counter()
 
+    # ----------------------------------------------------------------------- #
+    # Creation and counting
+
     instance = gameobj.GameObject()
     assert instance.name == "GameObject_1"
     assert instance.get_loglvl() == 20
@@ -51,3 +54,32 @@ def test_gameobject():
         MyOtherGameObj: 1,
         MySubGameObj: 1,
     }
+
+    # ----------------------------------------------------------------------- #
+    # Params
+
+    dft_params = {
+        'identity': None,
+        'name': None,
+        'loglvl': "INFO",
+        'logpath': None,
+    }
+
+    assert gameobj.GameObject.dft_params() == dft_params
+    assert MyGameObj.dft_params() == dft_params
+    assert MySubGameObj.dft_params() == dft_params
+
+    gameobj.GameObject.set_dft_loglvl("DEBUG", propag=True)
+    MyGameObj.set_dft_loglvl("ERROR")
+
+    assert gameobj.GameObject.dft_params()['loglvl'] == "DEBUG"
+    assert MyGameObj.dft_params()['loglvl'] == "ERROR"
+    assert MySubGameObj.dft_params()['loglvl'] == "DEBUG"
+
+    base = gameobj.GameObject()
+    instance = MyGameObj()
+    subinstance = MySubGameObj()
+
+    assert base.get_loglvl(explicit=True) == "DEBUG"
+    assert instance.get_loglvl(explicit=True) == "ERROR"
+    assert subinstance.get_loglvl(explicit=True) == "DEBUG"

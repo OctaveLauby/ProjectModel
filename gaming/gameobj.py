@@ -6,16 +6,29 @@ from utils.params import read_params
 from .parameters import LOGLVL
 
 
+DFT_CLASS_ATTR = {
+    '_logname': None,
+    '_loglvl': LOGLVL,
+    '_logpath': None,
+}
+
+
 class GameObjMeta(type):
-    """Meta class to track ineheritance within GameObject."""
+    """Meta class of GameObject
+
+    > track ineheritance within GameObject.
+    > init class attributes to avoid bounding
+    """
 
     __inheritors__ = defaultdict(list)
 
     def __new__(mcs, clsname, superclasses, attributedict):
         """Create a new game class."""
         klass = type.__new__(mcs, clsname, superclasses, attributedict)
-        for base in klass.mro()[1:-1]:
+        for base in klass.mro()[1:-1]:  # skip current class
             mcs.__inheritors__[base].append(klass)
+        for dft_attr, dft_value in DFT_CLASS_ATTR.items():
+            setattr(klass, dft_attr, dft_value)
         return klass
 
 
@@ -23,13 +36,7 @@ class GameObject(LogClass, metaclass=GameObjMeta):
     """Major object of game."""
 
     # ----------------------------------------------------------------------- #
-    # Class attributes / methods
-
-    # ---- Params
-
-    _logname = None
-    _loglvl = LOGLVL
-    _logpath = None
+    # Class methods
 
     @classmethod
     def dft_params(cls):
@@ -38,6 +45,7 @@ class GameObject(LogClass, metaclass=GameObjMeta):
         params.update({
             'identity': None,
         })
+        return params
 
     @classmethod
     def dft_logparams(cls):
@@ -49,9 +57,19 @@ class GameObject(LogClass, metaclass=GameObjMeta):
         }
 
     @classmethod
-    def set_dft_loglvl(cls, level):
-        """Set default log level (use to create instances)."""
-        cls._loglvl = level
+    def set_dft_loglvl(cls, level, propag=False):
+        """Set default log level (use to create instances).
+
+        Args:
+            level (int or str):         readable log level for logging
+            propag (bool, optional):    propagate to subclasses
+        """
+        if not propag:
+            cls._loglvl = level
+        else:
+            cls._loglvl = level
+            for subclass in GameObjMeta.__inheritors__[cls]:
+                subclass._loglvl = level
 
     # ---- Object counter
 
