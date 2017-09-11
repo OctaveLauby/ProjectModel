@@ -5,6 +5,14 @@ class MyGameObj(gameobj.GameObject):
     pass
 
 
+class MySubGameObj(MyGameObj):
+    pass
+
+
+class MyOtherGameObj(gameobj.GameObject):
+    pass
+
+
 def test_gameobject():
 
     gameobj.GameObject.reset_counter()
@@ -31,7 +39,15 @@ def test_gameobject():
     instance = MyGameObj()
     assert instance.name == "MyGameObj_2"
 
+    instance = MySubGameObj()
+    assert instance.name == "MySubGameObj_1"
+
+    instance = MyOtherGameObj()
+    assert instance.name == "MyOtherGameObj_1"
+
     assert gameobj.GameObject.counter == {
-        MyGameObj: 2,
-        gameobj.GameObject: 5,
+        gameobj.GameObject: 7,
+        MyGameObj: 3,
+        MyOtherGameObj: 1,
+        MySubGameObj: 1,
     }
