@@ -14,9 +14,6 @@ class GameObjMeta(type):
     """
 
     __inheritors__ = defaultdict(list)
-    _logname = None
-    _loglvl = LOGLVL
-    _logpath = None
 
     def __new__(mcs, clsname, superclasses, attributedict):
         """Create a new game class."""
@@ -24,6 +21,13 @@ class GameObjMeta(type):
         for base in klass.mro()[1:-1]:  # skip current class
             mcs.__inheritors__[base].append(klass)
         return klass
+
+    def __init__(cls, clsname, superclasses, attributedict):
+        """Init game object class."""
+        super().__init__(clsname, superclasses, attributedict)
+        cls._logname = None
+        cls._loglvl = LOGLVL
+        cls._logpath = None
 
 
 class GameObject(LogClass, metaclass=GameObjMeta):
