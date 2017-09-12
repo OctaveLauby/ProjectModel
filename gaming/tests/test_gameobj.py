@@ -13,6 +13,24 @@ class MyOtherGameObj(gameobj.GameObject):
     pass
 
 
+def test_gameobjmeta():
+
+    class Class1(metaclass=gameobj.GameObjMeta):
+        pass
+
+    assert Class1._logname is None
+    assert Class1._loglvl == "INFO"
+    assert Class1._logpath is None
+
+    class Class11(Class1):
+        pass
+
+    # Make sure class attributes are not bounded
+    Class1._loglvl += "_broke"
+    assert Class1._loglvl == "INFO_broke"
+    assert Class11._loglvl == "INFO"
+
+
 def test_gameobject():
 
     gameobj.GameObject.reset_counter()
